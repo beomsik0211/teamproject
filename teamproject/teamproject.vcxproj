@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="arp_source.cpp" />
     <ClCompile Include="ether_source.cpp" />
     <ClCompile Include="ip_source.cpp" />
     <ClCompile Include="main.cpp" />
@@ -28,6 +29,8 @@
     <ClCompile Include="udp_source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arp_header.h" />
+    <ClInclude Include="arp_struct.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="ether_header.h" />
     <ClInclude Include="ether_struct.h" />
