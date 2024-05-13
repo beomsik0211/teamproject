@@ -1,0 +1,32 @@
+
+	while (1) {
+		printf("\n<필터링>\n");
+		printf(" 1. ICMP\n 2. TCP\n 3. HTTP\n 4. FTP\n 5. ALL\n ");
+		printf(" >> ");
+		scanf_s("%d", &sel);
+		if (sel == 1 || sel == 2 || sel == 3 || sel == 4 || sel == 5 || sel == 8) {
+			break;
+		}
+		else {
+			printf("다시입력\n");
+		}
+	}
+	switch (sel) {
+	case 1: //ICMP
+		if (IH->Protocol == IPPROTO_ICMP) {
+			print_first(h, EH);
+			print_protocol(EH, type, IH, TCP, CS);
+			printf("┃\t세부 프로토콜 : ICMP               \n");
+			printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+		}
+		break;
+
+    extern packet* pk;
+    print_ip(pk->ip);
+    arp_header* ah;
+    ah=pk->arp;
+
+    ah=(arp_header*)malloc(ntohs(ah->arp_hardtype));
+    ah=(arp_header*)(pk->app)
+    printf("************************** ARP Header *****************************");
+    printf("Hardware type: %d\n",ntohs(ah->arp_hardtype));
