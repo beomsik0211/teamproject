@@ -29,7 +29,6 @@ void print_arp(arp_header *arp,ip_header *ih){
     printf("tmacadd: %d\n",ntohs(ah->arp_tamcadd));
     printf("\n");
     printf("tipadd: %d\n",ntohs(ah->arp_tipadd));
-    
 
 
 }
