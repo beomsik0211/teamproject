@@ -6,6 +6,7 @@
 #include "struct.h"
 #include "include.h"
 #include "define.h"
+#include "arp_header.h"
 
 
 #pragma comment(lib, "ws2_32")
@@ -35,8 +36,10 @@ int main()
 	extern packet* pk;
 	tcp_header* tcp = NULL;
 	udp_header* udp = NULL;
+	arp_header* arp = NULL;
 	int tcpCheck = 0;
 	int udpCheck = 0;
+	int arpCheck = 0;
 
 	pcap_if_t* alldevs;
 	pcap_if_t* d;
@@ -91,7 +94,7 @@ int main()
 		return -1;
 	}
 	printf("\n\n--------------------------------------------------------\n");
-	printf("¾î¶² ÆĞÅ¶À» Ä¸Ã³ÇÒÁö °í¸£¼¼¿ä.\n");
+	printf("ì–´ë–¤ íŒ¨í‚·ì„ ìº¡ì²˜í• ì§€ ê³ ë¥´ì„¸ìš”.\n");
 	printf("--------------------------------------------------------\n");
 	printf("1:TCP(HTTP, FTP, TELNET, SSH, SMTP, POP3, IMAP, P2P)\n");
 	printf("2:UDP(DNS, DHCP)\n");
@@ -99,14 +102,14 @@ int main()
 	printf("3:RARP\n");
 	printf("5:ALL\n");
 	printf("--------------------------------------------------------\n");
-	printf("¹øÈ£ : (1-5) : ");
+	printf("ë²ˆí˜¸ : (1-5) : ");
 
 	scanf("%d", &inum1);
 
 	if (inum1 == 1) {
 		packet_filter = "tcp";
 		printf("\n\n--------------------------------------------------------\n");
-		printf("¾î¶² ÆĞÅ¶À» Ä¸Ã³ÇÒÁö °í¸£¼¼¿ä.\n");
+		printf("ì–´ë–¤ íŒ¨í‚·ì„ ìº¡ì²˜í• ì§€ ê³ ë¥´ì„¸ìš”.\n");
 		printf("--------------------------------------------------------\n");
 		printf("1:HTTP\n");
 		printf("2:FTP\n");
@@ -118,24 +121,25 @@ int main()
 		printf("8:P2P\n");
 		printf("9:ALL(TCP)\n");
 		printf("--------------------------------------------------------\n");
-		printf("¹øÈ£ : (1-9) : ");
+		printf("ë²ˆí˜¸ : (1-9) : ");
 
 		scanf("%d", &inum2);
 	}
 	else if (inum1 == 2) {
 		packet_filter = "udp";
 		printf("\n\n--------------------------------------------------------\n");
-		printf("¾î¶² ÆĞÅ¶À» Ä¸Ã³ÇÒÁö °í¸£¼¼¿ä.\n");
+		printf("ì–´ë–¤ íŒ¨í‚·ì„ ìº¡ì²˜í• ì§€ ê³ ë¥´ì„¸ìš”.\n");
 		printf("--------------------------------------------------------\n");
 		printf("1:DNS\n");
 		printf("2:DHCP\n");
 		printf("3:ALL(UDP)\n");
 		printf("--------------------------------------------------------\n");
-		printf("¹øÈ£ : (1-3) : ");
+		printf("ë²ˆí˜¸ : (1-3) : ");
 		scanf("%d", &inum2);
 	}
 	else if (inum1 == 3) {
 		packet_filter = "arp";
+		//printf("arp");
 		inum2 = 0;
 	}
 	else if (inum1 == 4) {
@@ -174,13 +178,13 @@ int main()
 		 * we suppose to be in a C class network */
 		netmask = 0xffffff;
 
-	if (pcap_compile(fp, &fcode, packet_filter, 1, netmask) < 0) { // À§¿¡¼­ ÀûÀº packet_filter·Î ¿øÇÏ´Â ÆĞÅ¶¸¸ Ä¸Ã³°¡´É
+	if (pcap_compile(fp, &fcode, packet_filter, 1, netmask) < 0) { // ìœ„ì—ì„œ ì ì€ packet_filterë¡œ ì›í•˜ëŠ” íŒ¨í‚·ë§Œ ìº¡ì²˜ê°€ëŠ¥
 		fprintf(stderr, "\nUnable to compile the packet filter. Check the syntax.\n");
 		pcap_freealldevs(alldevs);
 		return -1;
 	}
 
-	if (pcap_setfilter(fp, &fcode) < 0) { //ÇÊÅÍ Àû¿ë
+	if (pcap_setfilter(fp, &fcode) < 0) { //í•„í„° ì ìš©
 		fprintf(stderr, "\nError setting the filter.\n");
 		pcap_freealldevs(alldevs);
 		return -1;
@@ -221,6 +225,14 @@ int main()
 			
 			print_udp(pk->eth, pk->ip);
 
+			struct arp_header* ah;
+			ah = (arp_header*)(pkt_data + ETHER_LENGTH + (pk->ip->ip_leng * 4));
+			pk->arp = ah;
+
+			header = (pcap_pkthdr*)header;
+			pk->arp = ah;
+
+			//print_arp(pk->eth, pk->ip);
 		}
 	}
 }
