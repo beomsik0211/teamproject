@@ -43,6 +43,8 @@ typedef struct packet {
 	ip_header* ip;
 	tcp_header* tcp;
 	udp_header* udp;
+
+	icmp_header* icmp;
 	dns_header* dns;
 	tls_header* tls;
 	pcap_pkthdr* header;
