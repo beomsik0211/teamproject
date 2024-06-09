@@ -7,6 +7,8 @@
 #include "tcp_struct.h"
 #include "tls_struct.h"
 #include "udp_header.h"
+#include "arp_header.h"
+#include "icmp_header.h"
 
 #pragma pack(push, 1)
 typedef struct arp_header {
